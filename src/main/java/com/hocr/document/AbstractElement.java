@@ -26,20 +26,21 @@ package com.hocr.document;
 /**
  *
  * @author alexander
+ * @param <T>
  */
-public abstract class AbstractElement<P extends Element> implements Element<P> {
+public class AbstractElement<T extends ChildElement> implements ChildElement<T> {
 
-    private P parent;
+    private T parent;
 
     private String value;
 
     @Override
-    public P getParent() {
+    public T getParent() {
         return parent;
     }
 
     @Override
-    public void setParent(P parentElement) {
+    public void setParent(T parentElement) {
         this.parent = parentElement;
     }
 

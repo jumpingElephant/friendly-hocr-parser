@@ -48,7 +48,7 @@ public class HocrParser {
         Document document = builder.parse(inputStream);
     }
 
-    public void parse(InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
+    public Root parse(InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
         final SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
 
         saxParserFactory.setValidating(false);
@@ -59,7 +59,7 @@ public class HocrParser {
         HocrContentHandler handler = new HocrContentHandler();
         saxParser.parse(inputStream, handler);
 
-        Root root = handler.getRoot();
+        return handler.getRoot();
 
     }
 

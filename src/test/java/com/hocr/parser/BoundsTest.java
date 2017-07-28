@@ -47,7 +47,7 @@ public class BoundsTest {
         String ocrx_wordTitleValue = "bbox 263 228 618 301; x_wconf 70";
 
         // WHEN
-        Bounds actual = Bounds.fromHocrTitleValue1(ocrx_wordTitleValue).get();
+        Bounds actual = Bounds.fromHocrTitleValue(ocrx_wordTitleValue).get();
 
         // THEN
         assertEquals(263, actual.getLeft());

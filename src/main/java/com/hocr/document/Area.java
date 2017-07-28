@@ -23,49 +23,10 @@
  */
 package com.hocr.document;
 
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  *
  * @author alexander
  */
-public class Area extends AbstractElement<Page> implements ParentElement<Paragraph, Page> {
-
-    private String id;
-
-    private String title;
-
-    private final List<Paragraph> paragraphs;
-
-    public Area() {
-        this.paragraphs = new LinkedList<>();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    @Override
-    public List<Paragraph> getChildren() {
-        return paragraphs;
-    }
-
-    @Override
-    public void addChild(Paragraph paragraph) {
-        paragraphs.add(paragraph);
-    }
+public class Area extends AbstractTypesettingElement<Paragraph, Page> {
 
 }

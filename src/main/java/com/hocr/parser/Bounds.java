@@ -54,9 +54,9 @@ public class Bounds {
      * @param hocrTitleValue
      * @return
      */
-    public static Optional<Bounds> fromHocrTitleValue1(String hocrTitleValue) {
+    public static Optional<Bounds> fromHocrTitleValue(String hocrTitleValue) {
 
-        Pattern bboxPattern = Pattern.compile("bbox (\\d+) (\\d+) (\\d+) (\\d+);");
+        Pattern bboxPattern = Pattern.compile("bbox \\d+ \\d+ \\d+ \\d+");
 
         final Matcher bboxMatcher = bboxPattern.matcher(hocrTitleValue);
 

@@ -39,10 +39,11 @@ public class Root extends AbstractElement {
         this.html = html;
     }
 
-//    @Override
-//    public void setParent(Element parentElement) {
-//        if (parentElement != null) {
-//            throw new IllegalArgumentException("A root element must not have a parent");
-//        }
-//    }
+    @Override
+    public void setParent(ChildElement parentElement) {
+        if (parentElement != null) {
+            throw new IllegalArgumentException("A root element must not have a parent");
+        }
+    }
+
 }

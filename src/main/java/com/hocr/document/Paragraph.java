@@ -23,59 +23,10 @@
  */
 package com.hocr.document;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-
 /**
  *
  * @author alexander
  */
-public class Paragraph extends AbstractElement<Area> implements ParentElement<Line, Area> {
+public class Paragraph extends AbstractTypesettingElement<Line, Area> {
 
-    private String id;
-
-    private String title;
-
-    private Optional<Direction> direction;
-
-    private final List<Line> lines;
-
-    public Paragraph() {
-        this.lines = new LinkedList<>();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Optional<Direction> getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = Optional.ofNullable(direction);
-    }
-
-    @Override
-    public List<Line> getChildren() {
-        return lines;
-    }
-
-    @Override
-    public void addChild(Line line) {
-        this.lines.add(line);
-    }
 }

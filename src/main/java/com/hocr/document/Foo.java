@@ -24,13 +24,14 @@
 package com.hocr.document;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  *
  * @author alexander
  */
-public class Foo extends AbstractElement<Word> {
+public class Foo extends AbstractElement<Word> implements HocrElement<HocrElement, Word> {
 
     private String qualifiedName;
 
@@ -54,6 +55,16 @@ public class Foo extends AbstractElement<Word> {
 
     public void addAttribute(String key, String value) {
         attributes.put(key, value);
+    }
+
+    @Override
+    public List<HocrElement> getChildren() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void addChild(HocrElement child) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

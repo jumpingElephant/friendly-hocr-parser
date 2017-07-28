@@ -23,18 +23,19 @@
  */
 package com.hocr.document;
 
-import java.util.List;
-
 /**
  *
  * @author alexander
- * @param <C>
- * @param <P>
+ * @param <P> parent type
  */
-public interface ParentElement< C extends Element, P extends Element> extends Element<P> {
+public interface ChildElement<P extends ChildElement> {
 
-    List<C> getChildren();
+    P getParent();
 
-    void addChild(C child);
+    void setParent(P parentElement);
+
+    String getValue();
+
+    void setValue(String value);
 
 }

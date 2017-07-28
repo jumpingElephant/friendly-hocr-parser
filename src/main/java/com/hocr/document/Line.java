@@ -23,49 +23,10 @@
  */
 package com.hocr.document;
 
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  *
  * @author alexander
  */
-public class Line extends AbstractElement<Paragraph> implements ParentElement<Word, Paragraph> {
-
-    private String id;
-
-    private String title;
-
-    private final List<Word> words;
-
-    public Line() {
-        this.words = new LinkedList<>();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    @Override
-    public List<Word> getChildren() {
-        return words;
-    }
-
-    @Override
-    public void addChild(Word word) {
-        this.words.add(word);
-    }
+public class Line extends AbstractTypesettingElement<Word, Paragraph> {
 
 }

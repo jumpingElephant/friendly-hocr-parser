@@ -30,7 +30,7 @@ import java.util.List;
  *
  * @author alexander
  */
-public class Body extends AbstractElement<Html> {
+public class Body extends AbstractElement<Html> implements HocrElement<Page, Html> {
 
     private final List<Page> pages;
 
@@ -38,12 +38,14 @@ public class Body extends AbstractElement<Html> {
         this.pages = new LinkedList<>();
     }
 
-    public List<Page> getPages() {
-        return pages;
+    @Override
+    public List<Page> getChildren() {
+        return this.pages;
     }
 
-    public void addPage(Page ocrPage) {
-        pages.add(ocrPage);
+    @Override
+    public void addChild(Page child) {
+        this.pages.add(child);
     }
 
 }

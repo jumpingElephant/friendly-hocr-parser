@@ -23,22 +23,18 @@
  */
 package com.hocr.parser;
 
-import com.hocr.document.Area;
 import com.hocr.document.Body;
-import com.hocr.document.Direction;
-import com.hocr.document.Element;
+import com.hocr.document.ChildElement;
 import com.hocr.document.Foo;
 import com.hocr.document.Head;
-import com.hocr.document.Html;
-import com.hocr.document.Line;
-import com.hocr.document.Meta;
 import com.hocr.document.HocrClass;
-import com.hocr.document.HocrLanguage;
-import com.hocr.document.Page;
-import com.hocr.document.Paragraph;
+import com.hocr.document.Html;
+import com.hocr.document.Meta;
 import com.hocr.document.Root;
 import com.hocr.document.Title;
-import com.hocr.document.Word;
+import com.hocr.document.TypesettingElement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -53,7 +49,7 @@ public class HocrContentHandler extends DefaultHandler {
 
     private Root root;
 
-    private Element work;
+    private ChildElement work;
 
     public Root getRoot() {
         return root;
@@ -63,7 +59,6 @@ public class HocrContentHandler extends DefaultHandler {
     public void startDocument() throws SAXException {
         this.root = new Root();
         this.work = this.root;
-        applyParent(root);
     }
 
     @Override
@@ -97,7 +92,7 @@ public class HocrContentHandler extends DefaultHandler {
             case "div":
             case "p":
             case "span":
-                this.work = createTypesettingElement(uri, localName, qualifiedName, attributes);
+                this.work = createDocumentElement(uri, localName, qualifiedName, attributes);
                 break;
 
             default:
@@ -150,86 +145,42 @@ public class HocrContentHandler extends DefaultHandler {
         return body;
     }
 
-    private Element createTypesettingElement(String uri, String localName, String qualifiedName, Attributes attributes) {
+    private ChildElement createDocumentElement(String uri, String localName, String qualifiedName, Attributes attributes) {
         return HocrClass.forClassName(attributes.getValue("class"))
-                .map(ocrClass -> {
-                    switch (ocrClass) {
+                .map(hocrClass -> {
+                    switch (hocrClass) {
                         case PAGE:
-                            return createPageElement(uri, localName, qualifiedName, attributes);
-
                         case AREA:
-                            return createAreaElement(uri, localName, qualifiedName, attributes);
-
                         case PARAGRAPH:
-                            return createParagraphElement(uri, localName, qualifiedName, attributes);
-
                         case LINE:
-                            return createLineElement(uri, localName, qualifiedName, attributes);
-
                         case WORD:
-                            return createWordElement(uri, localName, qualifiedName, attributes);
+                            return createTypesettingElement(hocrClass, uri, localName, qualifiedName, attributes);
 
                     }
+
                     return null;
                 })
                 .orElseThrow(() -> new IllegalArgumentException("Unknown class type: " + attributes.getValue("class")));
 
     }
 
-    private Page createPageElement(String uri, String localName, String qualifiedName, Attributes attributes) {
-        Page ocrPage = new Page();
-        ocrPage.setId(attributes.getValue("id"));
-        ocrPage.setTitle(attributes.getValue("title"));
+    private ChildElement createTypesettingElement(HocrClass hocrClass, String uri, String localName, String qualifiedName, Attributes attributes) {
+        try {
+            TypesettingElement element = hocrClass.getType().newInstance();
+            element.setId(attributes.getValue("id"));
+            element.setTitle(attributes.getValue("title"));
 
-        applyParent(ocrPage);
-        ocrPage.getParent().addPage(ocrPage);
-        return ocrPage;
+            applyBounds(element, element.getTitle());
+            applyParent(element);
+            element.getParent().addChild(element);
+            return element;
+        } catch (InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(HocrContentHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
-    private Area createAreaElement(String uri, String localName, String qualifiedName, Attributes attributes) {
-        Area area = new Area();
-        area.setId(attributes.getValue("id"));
-        area.setTitle(attributes.getValue("title"));
-
-        applyParent(area);
-        area.getParent().addChild(area);
-        return area;
-    }
-
-    private Element createParagraphElement(String uri, String localName, String qualifiedName, Attributes attributes) {
-        Paragraph paragraph = new Paragraph();
-        paragraph.setId(attributes.getValue("id"));
-        paragraph.setTitle(attributes.getValue("title"));
-        Direction.forKey(attributes.getValue("dir")).ifPresent(paragraph::setDirection);
-
-        applyParent(paragraph);
-        paragraph.getParent().addChild(paragraph);
-        return paragraph;
-    }
-
-    private Element createLineElement(String uri, String localName, String qualifiedName, Attributes attributes) {
-        Line line = new Line();
-        line.setId(attributes.getValue("id"));
-        line.setTitle(attributes.getValue("title"));
-
-        applyParent(line);
-        line.getParent().addChild(line);
-        return line;
-    }
-
-    private Element createWordElement(String uri, String localName, String qualifiedName, Attributes attributes) {
-        Word word = new Word();
-        word.setId(attributes.getValue("id"));
-        word.setTitle(attributes.getValue("title"));
-        HocrLanguage.forKey(attributes.getValue("lang")).ifPresent(word::setLanguage);
-        Direction.forKey(attributes.getValue("dir")).ifPresent(word::setDirection);
-
-        applyParent(word);
-        word.getParent().addChild(word);
-        return word;
-    }
-
-    private Element createUnknown(String uri, String localName, String qualifiedName, Attributes attributes) {
+    private ChildElement createUnknown(String uri, String localName, String qualifiedName, Attributes attributes) {
         Foo foo = new Foo();
         foo.setQualifiedName(qualifiedName);
         IntStream.range(0, attributes.getLength())
@@ -261,9 +212,15 @@ public class HocrContentHandler extends DefaultHandler {
         super.fatalError(e); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public <T extends Element> T applyParent(T element) {
+    public <T extends ChildElement> T applyParent(T element) {
         element.setParent(this.work);
         return element;
+    }
+
+    private void applyBounds(TypesettingElement element, String hocrTitleValue) {
+        Bounds bounds = Bounds.fromHocrTitleValue(hocrTitleValue)
+                .orElseThrow(() -> new IllegalStateException("No bounds found in title: " + hocrTitleValue));
+        element.setBounds(bounds);
     }
 
 }

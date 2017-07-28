@@ -23,9 +23,13 @@
  */
 package com.hocr.parser;
 
+import com.hocr.document.Foo;
+import com.hocr.document.Root;
+import com.hocr.document.Word;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -49,9 +53,16 @@ public class HocrParserTest {
         HocrParser instance = new HocrParser();
 
         // WHEN
-        instance.parse(inputStream);
+        Root actual = instance.parse(inputStream);
 
         // THEN
+        Word word_1_24 = actual.getHtml().getBody().getChildren().get(0).getChildren().get(0).getChildren().get(1).getChildren().get(3).getChildren().get(3);
+        assertEquals("word_1_24", word_1_24.getId());
+
+        assertEquals(1, word_1_24.getChildren().size());
+        Foo actualFoo = (Foo) word_1_24.getChildren().get(0);
+        assertEquals("strong", actualFoo.getQualifiedName());
+
     }
 
 //    @Test

@@ -23,40 +23,41 @@
  */
 package com.hocr.document;
 
-import java.util.Arrays;
+import com.hocr.parser.Bounds;
 import java.util.Optional;
 
 /**
  *
  * @author alexander
+ * @param <C> child type
+ * @param <P> parent type
  */
-public enum HocrClass {
-    PAGE("ocr_page", Page.class),
-    AREA("ocr_carea", Area.class),
-    PARAGRAPH("ocr_par", Paragraph.class),
-    LINE("ocr_line", Line.class),
-    WORD("ocrx_word", Word.class);
+public interface TypesettingElement< C extends HocrElement, P extends HocrElement> extends HocrElement<C, P> {
 
-    private final String className;
-    private final Class<? extends TypesettingElement> type;
+    @Override
+    P getParent();
 
-    private HocrClass(String className, Class<? extends TypesettingElement> type) {
-        this.className = className;
-        this.type = type;
-    }
+    @Override
+    void setParent(P parentElement);
 
-    public String getClassName() {
-        return className;
-    }
+    String getId();
 
-    public Class<? extends TypesettingElement> getType() {
-        return type;
-    }
+    void setId(String id);
 
-    public static Optional<HocrClass> forClassName(String className) {
-        return Arrays.asList(HocrClass.values()).stream()
-                .filter(ocrClass -> ocrClass.getClassName().equals(className))
-                .findAny();
-    }
+    String getTitle();
+
+    void setTitle(String title);
+
+    Optional<HocrLanguage> getLanguage();
+
+    void setLanguage(HocrLanguage language);
+
+    Optional<Direction> getDirection();
+
+    void setDirection(Direction direction);
+
+    Bounds getBounds();
+
+    void setBounds(Bounds bounds);
 
 }
