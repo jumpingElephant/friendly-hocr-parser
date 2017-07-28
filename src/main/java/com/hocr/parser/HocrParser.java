@@ -56,7 +56,7 @@ public class HocrParser {
 
         SAXParser saxParser = saxParserFactory.newSAXParser();
 
-        OcrContentHandler handler = new OcrContentHandler();
+        HocrContentHandler handler = new HocrContentHandler();
         saxParser.parse(inputStream, handler);
 
         Root root = handler.getRoot();

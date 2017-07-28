@@ -21,42 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.hocr.document;
+package com.hocr.parser;
 
-import java.util.Arrays;
-import java.util.Optional;
+import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  *
  * @author alexander
  */
-public enum OcrClass {
-    PAGE("ocr_page", Page.class),
-    AREA("ocr_carea", Area.class),
-    PARAGRAPH("ocr_par", Paragraph.class),
-    LINE("ocr_line", Line.class),
-    WORD("ocrx_word", Word.class);
+public class BoundsTest {
 
-    private final String className;
-    private final Class<? extends Element> type;
-
-    private OcrClass(String className, Class<? extends Element> type) {
-        this.className = className;
-        this.type = type;
+    public BoundsTest() {
     }
 
-    public String getClassName() {
-        return className;
+    @Before
+    public void setUp() {
     }
 
-    public Class<? extends Element> getType() {
-        return type;
-    }
+    @Test
+    public void testFromHocrTitleValue() {
 
-    public static Optional<OcrClass> forClassName(String className) {
-        return Arrays.asList(OcrClass.values()).stream()
-                .filter(ocrClass -> ocrClass.getClassName().equals(className))
-                .findAny();
+        // GIVEN
+        String ocrx_wordTitleValue = "bbox 263 228 618 301; x_wconf 70";
+
+        // WHEN
+        Bounds actual = Bounds.fromHocrTitleValue1(ocrx_wordTitleValue).get();
+
+        // THEN
+        assertEquals(263, actual.getLeft());
+        assertEquals(228, actual.getTop());
+        assertEquals(618, actual.getRight());
+        assertEquals(301, actual.getBottom());
+
     }
 
 }

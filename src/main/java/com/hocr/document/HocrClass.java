@@ -30,22 +30,32 @@ import java.util.Optional;
  *
  * @author alexander
  */
-public enum OcrLanguage {
-    ENGLISH("en"), GERMAN("deu");
+public enum HocrClass {
+    PAGE("ocr_page", Page.class),
+    AREA("ocr_carea", Area.class),
+    PARAGRAPH("ocr_par", Paragraph.class),
+    LINE("ocr_line", Line.class),
+    WORD("ocrx_word", Word.class);
 
-    private final String key;
+    private final String className;
+    private final Class<? extends Element> type;
 
-    private OcrLanguage(String key) {
-        this.key = key;
+    private HocrClass(String className, Class<? extends Element> type) {
+        this.className = className;
+        this.type = type;
     }
 
-    public String getKey() {
-        return key;
+    public String getClassName() {
+        return className;
     }
 
-    public static Optional<OcrLanguage> forKey(String key) {
-        return Arrays.asList(OcrLanguage.values()).stream()
-                .filter(ocrLanguage -> ocrLanguage.getKey().equals(key))
+    public Class<? extends Element> getType() {
+        return type;
+    }
+
+    public static Optional<HocrClass> forClassName(String className) {
+        return Arrays.asList(HocrClass.values()).stream()
+                .filter(ocrClass -> ocrClass.getClassName().equals(className))
                 .findAny();
     }
 

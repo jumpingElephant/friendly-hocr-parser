@@ -32,8 +32,8 @@ import com.hocr.document.Head;
 import com.hocr.document.Html;
 import com.hocr.document.Line;
 import com.hocr.document.Meta;
-import com.hocr.document.OcrClass;
-import com.hocr.document.OcrLanguage;
+import com.hocr.document.HocrClass;
+import com.hocr.document.HocrLanguage;
 import com.hocr.document.Page;
 import com.hocr.document.Paragraph;
 import com.hocr.document.Root;
@@ -49,7 +49,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * @author alexander
  */
-public class OcrContentHandler extends DefaultHandler {
+public class HocrContentHandler extends DefaultHandler {
 
     private Root root;
 
@@ -151,7 +151,7 @@ public class OcrContentHandler extends DefaultHandler {
     }
 
     private Element createTypesettingElement(String uri, String localName, String qualifiedName, Attributes attributes) {
-        return OcrClass.forClassName(attributes.getValue("class"))
+        return HocrClass.forClassName(attributes.getValue("class"))
                 .map(ocrClass -> {
                     switch (ocrClass) {
                         case PAGE:
@@ -221,7 +221,7 @@ public class OcrContentHandler extends DefaultHandler {
         Word word = new Word();
         word.setId(attributes.getValue("id"));
         word.setTitle(attributes.getValue("title"));
-        OcrLanguage.forKey(attributes.getValue("lang")).ifPresent(word::setLanguage);
+        HocrLanguage.forKey(attributes.getValue("lang")).ifPresent(word::setLanguage);
         Direction.forKey(attributes.getValue("dir")).ifPresent(word::setDirection);
 
         applyParent(word);

@@ -23,70 +23,30 @@
  */
 package com.hocr.document;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Optional;
 
 /**
  *
  * @author alexander
  */
-public class Word extends AbstractElement<Line> implements ParentElement<Element, Line> {
+public enum HocrLanguage {
+    ENGLISH("en"), GERMAN("deu");
 
-    private String id;
+    private final String key;
 
-    private String title;
-
-    private Optional<HocrLanguage> language;
-
-    private Optional<Direction> direction;
-
-    private final List<Element> children;
-
-    public Word() {
-        this.children = new LinkedList<>();
+    private HocrLanguage(String key) {
+        this.key = key;
     }
 
-    public String getId() {
-        return id;
+    public String getKey() {
+        return key;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Optional<HocrLanguage> getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(HocrLanguage language) {
-        this.language = Optional.ofNullable(language);
-    }
-
-    public Optional<Direction> getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = Optional.ofNullable(direction);
-    }
-
-    @Override
-    public List<Element> getChildren() {
-        return children;
-    }
-
-    @Override
-    public void addChild(Element child) {
-        children.add(child);
+    public static Optional<HocrLanguage> forKey(String key) {
+        return Arrays.asList(HocrLanguage.values()).stream()
+                .filter(ocrLanguage -> ocrLanguage.getKey().equals(key))
+                .findAny();
     }
 
 }
