@@ -41,18 +41,52 @@ public class BoundsTest {
     }
 
     @Test
-    public void testFromHocrTitleValue() {
+    public void testFromHocrTitleValue_page_1() {
 
         // GIVEN
-        String ocrx_wordTitleValue = "bbox 263 228 618 301; x_wconf 70";
+        String ocrx_wordTitleValue = "image \"src/main/resources/output.png\"; bbox 0 0 5114 7171; ppageno 0";
+
+        // WHEN
+        Bounds actual = Bounds.fromHocrTitleValue(ocrx_wordTitleValue).get();
+
+        // THEN
+        assertEquals(0, actual.getLeft());
+        assertEquals(0, actual.getTop());
+        assertEquals(5114, actual.getRight());
+        assertEquals(7171, actual.getBottom());
+
+    }
+
+    @Test
+    public void testFromHocrTitleValue_block_1_1() {
+
+        // GIVEN
+        String ocrx_wordTitleValue = "bbox 0 0 5114 7171";
+
+        // WHEN
+        Bounds actual = Bounds.fromHocrTitleValue(ocrx_wordTitleValue).get();
+
+        // THEN
+        assertEquals(0, actual.getLeft());
+        assertEquals(0, actual.getTop());
+        assertEquals(5114, actual.getRight());
+        assertEquals(7171, actual.getBottom());
+
+    }
+
+    @Test
+    public void testFromHocrTitleValue_line_1_2() {
+
+        // GIVEN
+        String ocrx_wordTitleValue = "bbox 263 227 980 301; baseline -0.001 -15";
 
         // WHEN
         Bounds actual = Bounds.fromHocrTitleValue(ocrx_wordTitleValue).get();
 
         // THEN
         assertEquals(263, actual.getLeft());
-        assertEquals(228, actual.getTop());
-        assertEquals(618, actual.getRight());
+        assertEquals(227, actual.getTop());
+        assertEquals(980, actual.getRight());
         assertEquals(301, actual.getBottom());
 
     }
