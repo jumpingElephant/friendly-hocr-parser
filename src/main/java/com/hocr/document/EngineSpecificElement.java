@@ -26,7 +26,9 @@ package com.hocr.document;
 /**
  *
  * @author alexander
+ * @param <C> child type
+ * @param <P> parent type
  */
-public class Word extends AbstractTypesettingElement<HocrElement, Line> implements EngineSpecificElement<HocrElement, Line> {
+public interface EngineSpecificElement<C extends HocrElement, P extends ChildElement> extends HocrElement<C, P> {
 
 }
