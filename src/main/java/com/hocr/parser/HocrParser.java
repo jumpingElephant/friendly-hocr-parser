@@ -26,12 +26,9 @@ package com.hocr.parser;
 import com.hocr.document.Root;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 /**
@@ -39,14 +36,6 @@ import org.xml.sax.SAXException;
  * @author alexander
  */
 public class HocrParser {
-
-    public void parseDoc(InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
-        f.setValidating(false);
-        f.setAttribute("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-        DocumentBuilder builder = f.newDocumentBuilder();
-        Document document = builder.parse(inputStream);
-    }
 
     public Root parse(InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
         final SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();

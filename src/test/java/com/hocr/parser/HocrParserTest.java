@@ -56,28 +56,13 @@ public class HocrParserTest {
         Root actual = instance.parse(inputStream);
 
         // THEN
-        Word word_1_24 = actual.getHtml().getBody().getChildren().get(0).getChildren().get(0).getChildren().get(1).getChildren().get(3).getChildren().get(3);
+        Word word_1_24 = actual.getHtml().getBody().getChild(0).getChild(0).getChild(1).getChild(3).getChild(3);
         assertEquals("word_1_24", word_1_24.getId());
 
         assertEquals(1, word_1_24.getChildren().size());
         Foo actualFoo = (Foo) word_1_24.getChildren().get(0);
         assertEquals("strong", actualFoo.getQualifiedName());
 
-    }
-
-//    @Test
-    public void testParseDoc() throws Exception {
-
-        // GIVEN
-        File file = new File("src/main/resources/hocr6050804050300312430.xhtml");
-        InputStream inputStream = new FileInputStream(file);
-
-        HocrParser instance = new HocrParser();
-
-        // WHEN
-        instance.parseDoc(inputStream);
-
-        // THEN
     }
 
 }
