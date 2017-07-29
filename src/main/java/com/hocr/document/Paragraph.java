@@ -23,10 +23,20 @@
  */
 package com.hocr.document;
 
+import java.util.List;
+
 /**
  *
  * @author alexander
  */
 public class Paragraph extends AbstractTypesettingElement<Line, Area> {
+
+    public List<Line> getLines() {
+        return super.getChildren();
+    }
+
+    public Line getLine(int index) {
+        return super.getChild(index);
+    }
 
 }

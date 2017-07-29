@@ -98,6 +98,9 @@ public class HocrContentHandler extends DefaultHandler {
             default:
                 this.work = createUnknown(uri, localName, qualifiedName, attributes);
         }
+        if (this.work == null) {
+            throw new IllegalStateException("Work element must not turn to null");
+        }
     }
 
     private Html createHtmlElement(String uri, String localName, String qualifiedName, Attributes attributes) {

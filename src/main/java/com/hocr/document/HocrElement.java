@@ -35,6 +35,8 @@ public interface HocrElement<C extends HocrElement, P extends ChildElement> exte
 
     List<C> getChildren();
 
+    C getChild(int index);
+
     void addChild(C child);
 
 }

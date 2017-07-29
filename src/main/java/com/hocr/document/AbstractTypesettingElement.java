@@ -108,6 +108,11 @@ public abstract class AbstractTypesettingElement<C extends HocrElement, P extend
     }
 
     @Override
+    public C getChild(int index) {
+        return this.children.get(index);
+    }
+
+    @Override
     public void addChild(C child) {
         this.children.add(child);
     }

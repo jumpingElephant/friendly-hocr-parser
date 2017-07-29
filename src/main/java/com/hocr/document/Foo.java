@@ -63,6 +63,11 @@ public class Foo extends AbstractElement<Word> implements HocrElement<HocrElemen
     }
 
     @Override
+    public HocrElement getChild(int index) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
     public void addChild(HocrElement child) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

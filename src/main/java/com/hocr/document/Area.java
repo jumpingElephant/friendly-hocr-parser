@@ -23,10 +23,20 @@
  */
 package com.hocr.document;
 
+import java.util.List;
+
 /**
  *
  * @author alexander
  */
 public class Area extends AbstractTypesettingElement<Paragraph, Page> {
+
+    public List<Paragraph> getParagraphs() {
+        return super.getChildren();
+    }
+
+    public Paragraph getParagraph(int index) {
+        return super.getChild(index);
+    }
 
 }

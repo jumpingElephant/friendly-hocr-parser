@@ -44,8 +44,21 @@ public class Body extends AbstractElement<Html> implements HocrElement<Page, Htm
     }
 
     @Override
+    public Page getChild(int index) {
+        return this.pages.get(index);
+    }
+
+    @Override
     public void addChild(Page child) {
         this.pages.add(child);
+    }
+
+    public List<Page> getPages() {
+        return getChildren();
+    }
+
+    public Page getPage(int index) {
+        return getChild(index);
     }
 
 }
